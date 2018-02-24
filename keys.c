@@ -1,15 +1,12 @@
 
+#include <studio.h>
+#include "keys.h"
 
-struct triplet{
- int key;
- char value1[255];
- float value2;
-}
+
 
 int init(){
   //initialize the system
-
-  if(destroy(triplet) == -1){
+  if(destroy() == -1){
     //failure
     return -1;
   }
