@@ -5,6 +5,7 @@
 #include <fcntl.h> /* flags */
 #include <sys/stat.h> /* modes */
 #include <mqueue.h>
+#include "doubleLinkedList.c"
 // #include “mensaje.h”   ni puta idea de por que
 #define MAX_BUFFER 1024 /* buffer size */
 
@@ -24,9 +25,9 @@ int main() {
 	struct mq_attr queue_attr; /* queue atributes */
 	pthread_attr_t thread_attr; /* thread atributes */
 	queue_attr.mq_msgsize = sizeof(struct request));
-  attr.mq_maxmsg = MAX_BUFFER;
+    queue_attr.mq_maxmsg = MAX_BUFFER;
 
-  if(server_queue= mq_open("SERVER", O_RDWR, 7777, &attr)) == -1){
+  if(server_queue= mq_open("/SERVER", O_CREAT|O_RDONLY, 0700, &attr)) == -1){
     perror("error creating the queue");
     return -1;
   }
@@ -70,7 +71,7 @@ int main() {
 
 }
 
-	void process_message(struct mensaje *msg){
+void process_message(struct mensaje *msg){
 	struct request msg_local; /* local message */
 	struct mqd_t client_queue; /* client queue */
 	int result;
@@ -85,14 +86,107 @@ int main() {
 
 	/* execute client request and prepare reply */
 	result = msg_local.a + msg_local.b;
+
+	//if the client asks for init()
+	//if the clients asks for set_value()
+	//if the client asks for get_value()
+	//if the client asks for modify_value()
+	//if the client asks for delete_key()
+	//if the client asks for num_items()
+	//result = result_metodo_elegido()	
+
+
 	/* return result to client by sending it to queue */
 	client_queue = mq_open(msg_local.name, O_WRONLY);
 	if (client_queue == -1){
 		perror("Can't open client queue");
-  }
+  	}
 	else {
 		mq_send(client_queue, (char *) &result, sizeof(int), 0);
 		mq_close(client_queue);
 	}
 	pthread_exit(0);
-	}
+}
+
+ int init(){
+	 if(head == NULL){
+		 return -1;
+	 }
+	 struct Node* temp = head;
+	 while(temp->next != NULL){
+		 temp = temp->next;
+		 temp = NULL;
+	 }
+	 return 0;
+ }
+
+ int set_value(int key, char *value1, float value2){
+     struct Node* temp = head;
+	 struct Node* newNode = GetNewNode(x);
+	 while(temp->next != NULL){
+		 //the key already exists
+		 if(newNode.key == temp.key){
+			 return -1;
+		 }
+		 temp = temp->next;
+		 temp->next = newNode;
+	     newNode->prev = temp;
+	 }
+	 //succesful insertion
+	 return 0;
+ }
+
+ int get_value(int key, char *value1, float *value2){
+	struct Node* temp = head;
+	 while(temp->next != NULL){
+		//element found!
+		if(key == temp.key){
+			&value1 = temp.value1;
+			&value2 = temp.value2;
+			return 0;
+		}
+		temp = temp->next;
+	 }
+	 //no element with that key found
+	 return -1;
+ }
+
+ int modify_value(int key, char *value1, float *value2){
+	 struct Node* temp = head;
+	 while(temp->next != NULL){
+		//element found!
+		if(key == temp.key){
+			temp.value1 = &value1;
+			temp.value2 = &value2;
+			return 0;
+		}
+		temp = temp->next;
+	 }
+	 //no element with that key found
+	 return -1;
+ }
+
+ int delete_key(int key){
+	struct Node* temp = head;
+	while(temp->next != NULL){
+		//element found!
+		if(key == temp.key){
+			temp = NULL;
+			return 0;
+		}
+		temp = temp->next;
+	 }
+	 //key does not exist
+	 return -1; 
+ }
+
+ int num_items(){
+	 int items = 0;
+	 struct Node* temp = head;
+	 while(temp->next != NULL){
+		 temp = temp->next;
+		 items++;
+	 }
+	 return items;
+	 //return -1 donde??
+ }
