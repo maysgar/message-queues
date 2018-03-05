@@ -84,6 +84,78 @@ void ReversePrint() {
 	 return 0;
  }
 
+ int set_value(int key, char *value1, float value2){
+     struct Node* temp = head;
+	 struct Node* newNode = GetNewNode(x);
+	 while(temp->next != NULL){
+		 //the key already exists
+		 if(newNode.key == temp.key){
+			 return -1;
+		 }
+		 temp = temp->next;
+		 temp->next = newNode;
+	     newNode->prev = temp;
+	 }
+	 //succesful insertion
+	 return 0;
+ }
+
+ int get_value(int key, char *value1, float *value2){
+	struct Node* temp = head;
+	 while(temp->next != NULL){
+		//element found!
+		if(key == temp.key){
+			&value1 = temp.value1;
+			&value2 = temp.value2;
+			return 0;
+		}
+		temp = temp->next;
+	 }
+	 //no element with that key found
+	 return -1;
+ }
+
+ int modify_value(int key, char *value1, float *value2){
+	 struct Node* temp = head;
+	 while(temp->next != NULL){
+		//element found!
+		if(key == temp.key){
+			temp.value1 = &value1;
+			temp.value2 = &value2;
+			return 0;
+		}
+		temp = temp->next;
+	 }
+	 //no element with that key found
+	 return -1;
+ }
+
+ int delete_key(int key){
+	struct Node* temp = head;
+	while(temp->next != NULL){
+		//element found!
+		if(key == temp.key){
+			temp = NULL;
+			return 0;
+		}
+		temp = temp->next;
+	 }
+	 //key does not exist
+	 return -1; 
+ }
+
+ int num_items(){
+	 int items = 0;
+	 struct Node* temp = head;
+	 while(temp->next != NULL){
+		 temp = temp->next;
+		 items++;
+	 }
+	 return items;
+	 //return -1 donde??
+ }
+
+
 int main() {
 
 	/*Driver code to test the implementation*/
