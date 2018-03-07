@@ -6,7 +6,6 @@
 #include <sys/stat.h> /* modes */
 #include <mqueue.h>
 #include "doubleLinkedList.c"
-// #include “mensaje.h”   ni puta idea de por que
 #define MAX_BUFFER 1024 /* buffer size */
 
 /* mutex and condition variables for the message copy */
@@ -21,10 +20,10 @@ int main() {
 
   //creation of the queue
 	mqd_t server_queue;
-	struct request msg; /* message to receive */
+	struct triplet msg; /* message to receive */
 	struct mq_attr queue_attr; /* queue atributes */
 	pthread_attr_t thread_attr; /* thread atributes */
-	queue_attr.mq_msgsize = sizeof(struct request));
+	queue_attr.mq_msgsize = sizeof(struct triplet));
     queue_attr.mq_maxmsg = MAX_BUFFER;
 
   if(server_queue= mq_open("/SERVER", O_CREAT|O_RDONLY, 0700, &queue_attr)) == -1){
@@ -40,7 +39,7 @@ int main() {
 	pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
 
 	while (TRUE) {
-		mq_receive(server_queue, &msg, sizeof(struct request), 0);
+		mq_receive(server_queue, &msg, sizeof(struct triplet), 0);
 		pthread_create(&thid, &queue_attr, process_message, &msg);
 
 		/* wait for thread to copy message */ //critical section
@@ -72,32 +71,43 @@ int main() {
 }
 
 void process_message(struct mensaje *msg){
-	struct request msg_local; /* local message */
+	struct triplet msg_local; /* local message */
 	struct mqd_t client_queue; /* client queue */
 	int result;
 	/* thread copies message to local message*/
 	pthread_mutex_lock(&mutex_msg);
-	memcpy((char *) &msg_local, (char *)&msg, sizeof(struct
-	request));
+	memcpy((char *) &msg_local, (char *)&msg, sizeof(struct triplet));
 	/* wake up server */
 	message_not_copied = FALSE; /* FALSE = 0 */
 	pthread_cond_signal(&cond_msg);
 	pthread_mutex_unlock(&mutex_msg);
 
 	/* execute client request and prepare reply */
-	result = msg_local.a + msg_local.b;
-
-	//if the client asks for init()
-	//if the clients asks for set_value()
-	//if the client asks for get_value()
-	//if the client asks for modify_value()
-	//if the client asks for delete_key()
-	//if the client asks for num_items()
-	//result = result_metodo_elegido()	
+	switch(msg_local){  
+    	case 1 :  
+			result = init(); 
+			break;  
+    	case 2 :  
+			result = set_value(msg_local.key, &msg_local.value1, msg_local.value2); 
+			break;  
+    	case 3 :  
+			result = get_value(msg_local.key, &msg_local.value1, msg_local.value2); 
+			break;  
+		case 4 :
+			result = modify_value(msg_local.key, &msg_local.value1, &msg_local.value2);
+			break;
+		case 5 :
+			result = delete_key(msg_local.key);
+			break;
+		case 6 :
+			result = num_items();
+			break;
+	}
+    
 
 
 	/* return result to client by sending it to queue */
-	client_queue = mq_open(msg_local.name, O_WRONLY);
+	client_queue = mq_open(msg_local.client_queue_name, O_WRONLY);
 	if (client_queue == -1){
 		perror("Can't open client queue");
   	}
