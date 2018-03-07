@@ -20,6 +20,7 @@ void main(void) {
   //req.key = 5;
   //req.value1 = "esketit\0";
   //req.value2 = 5.0;
+  //req.method.id = 1; //init method
 
   req.a = 5; 
   req.b = 2; 
@@ -38,7 +39,7 @@ void main(void) {
   get_value(req.key, &req.value1, &req.value2);
 
   //Modify the associated values to the given ky by the ones specied in the method
-  printf("Loook for key: '%d' and change its associated values by value1 = %d and value 2 = %f\n", req.key, req.value1, req.value2);
+  printf("Look for key: '%d' and change its associated values by value1 = %d and value 2 = %f\n", req.key, req.value1, req.value2);
   modify_value(req.key, &req.value1, &req.value2);
 
   //Delete the elements with the given key

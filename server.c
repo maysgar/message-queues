@@ -27,21 +27,21 @@ int main() {
 	queue_attr.mq_msgsize = sizeof(struct request));
     queue_attr.mq_maxmsg = MAX_BUFFER;
 
-  if(server_queue= mq_open("/SERVER", O_CREAT|O_RDONLY, 0700, &attr)) == -1){
+  if(server_queue= mq_open("/SERVER", O_CREAT|O_RDONLY, 0700, &queue_attr)) == -1){
     perror("error creating the queue");
     return -1;
   }
 
 	pthread_mutex_init(&mutex_msg, NULL);
 	pthread_cond_init(&cond_msg, NULL);
-	pthread_attr_init(&attr);
+	pthread_attr_init(&queue_attr);
 
 	/* thread atributes */
 	pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
 
 	while (TRUE) {
 		mq_receive(server_queue, &msg, sizeof(struct request), 0);
-		pthread_create(&thid, &attr, process_message, &msg);
+		pthread_create(&thid, &queue_attr, process_message, &msg);
 
 		/* wait for thread to copy message */ //critical section
 		pthread_mutex_lock(&mutex_msg);
