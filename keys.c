@@ -58,13 +58,3 @@ int num_items(){
   // //error
   // return -1;
 }
-
-
-
-//#include <libkeys.a>
-#include "keys.h"
-#include <studio.h>
-int main(){
-   printf("Hello, World!");
-   return 0;
-}
