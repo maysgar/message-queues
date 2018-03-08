@@ -5,7 +5,7 @@
 #include "keys.h"
 
 
-int send(int number, int key, char *value1, float value2){
+;int send(int number, int key, char *value1, float value2){
 
   mqd_t server_queue; /* server message queue */
   mqd_t client_queue; /* client message queue */
