@@ -1,9 +1,10 @@
 /* Doubly Linked List implementation */
 #include<stdio.h>
 #include<stdlib.h>
+#include "keys.h"
 
 struct Node  {
-	int data;
+	struct triplet data;
 	struct Node* next;
 	struct Node* prev;
 };
@@ -11,9 +12,11 @@ struct Node  {
 struct Node* head; // global variable - pointer to head node.
 
 //Creates a new Node and returns pointer to it.
-struct Node* GetNewNode(int x) {
+struct Node* GetNewNode(int key, char *value1, float *value2){
 	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-	newNode->data = x;
+	(newNode->data)->key = key;
+	(newNode->data)->value1 = &value1;
+	(newNode->data)->value2 = &value2;
 	newNode->prev = NULL;
 	newNode->next = NULL;
 	return newNode;
