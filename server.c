@@ -5,6 +5,7 @@
 #include <fcntl.h> /* flags */
 #include <sys/stat.h> /* modes */
 #include <mqueue.h>
+#include <string.h>
 #include "doubleLinkedList.c"
 #define MAX_BUFFER 1024 /* buffer size */
 

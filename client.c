@@ -2,6 +2,7 @@
 #include <libkeys.a>
 #include <stdio.h>
 #include <mqueue.h>
+#include <string.h>
 #include "keys.h"
 
 void main(void) {
