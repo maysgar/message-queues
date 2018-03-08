@@ -137,7 +137,7 @@ void process_message(struct mensaje *msg){
 	 struct Node* newNode = GetNewNode(x);
 	 while(temp->next != NULL){
 		 //the key already exists
-		 if(newNode.key == temp.key){
+		 if(newNode->key == temp->key){
 			 return -1;
 		 }
 		 temp = temp->next;
@@ -152,9 +152,9 @@ void process_message(struct mensaje *msg){
 	struct Node* temp = head;
 	 while(temp->next != NULL){
 		//element found!
-		if(key == temp.key){
-			&value1 = temp.value1;
-			&value2 = temp.value2;
+		if(key == temp->key){
+			&value1 = temp->value1;
+			&value2 = temp->value2;
 			return 0;
 		}
 		temp = temp->next;
@@ -167,9 +167,9 @@ void process_message(struct mensaje *msg){
 	 struct Node* temp = head;
 	 while(temp->next != NULL){
 		//element found!
-		if(key == temp.key){
-			temp.value1 = &value1;
-			temp.value2 = &value2;
+		if(key == temp->key){
+			temp->value1 = &value1;
+			temp->value2 = &value2;
 			return 0;
 		}
 		temp = temp->next;
@@ -182,7 +182,7 @@ void process_message(struct mensaje *msg){
 	struct Node* temp = head;
 	while(temp->next != NULL){
 		//element found!
-		if(key == temp.key){
+		if(key == temp->key){
 			temp = NULL;
 			return 0;
 		}
