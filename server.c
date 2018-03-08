@@ -105,6 +105,7 @@ void process_message(struct mensaje *msg){
 			break;
 	}
     
+	char *resultString = sprintf(result);
 
 
 	/* return result to client by sending it to queue */
@@ -113,7 +114,7 @@ void process_message(struct mensaje *msg){
 		perror("Can't open client queue");
   	}
 	else {
-		mq_send(client_queue, (char *) &result, sizeof(int), 0);
+		mq_send(client_queue, (char *) &resultString, sizeof(int), 0);
 		mq_close(client_queue);
 	}
 	pthread_exit(0);
