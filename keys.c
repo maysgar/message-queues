@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <mqueue.h>
+#include <libkeys.a>
 #include "keys.h"
 
 
