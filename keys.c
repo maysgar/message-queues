@@ -9,7 +9,7 @@ int send(int number, int key, char *value1, float value2){
 
   mqd_t server_queue; /* server message queue */
   mqd_t client_queue; /* client message queue */
-  struct tripplet req;
+  struct triplet req;
   char *res;
   struct mq_attr attr;
   
@@ -19,13 +19,13 @@ int send(int number, int key, char *value1, float value2){
   server_queue = mq_open("/SERVER", O_WRONLY);
 
   req.key = key;
-  req.value1 = &value1;
+  strcpy(req.value1, value1);
   req.value2 = value2;  //OJO CUIDADO
   strcpy(req.client_queue_name, "/CLIENT_ONE");
   req.method_id = number;
 
 
-  mq_send(server_queue, &req, sizeof(struct triplet), 0);
+  mq_send(server_queue, (const char *) &req, sizeof(struct triplet), 0);
   mq_receive(client_queue, res, sizeof(int), 0);
   mq_close(server_queue);
   mq_close(client_queue);
