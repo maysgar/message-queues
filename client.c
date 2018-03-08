@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <mqueue.h>
 #include <string.h>
+#include <stdlib.h>
 #include "keys.h"
 
 void main(void) {

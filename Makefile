@@ -1,4 +1,3 @@
-clear
 all:
 	gcc -g -Wall -pthread -c -o keys keys.c -lrt
 	ar -rv libkeys.a keys.o

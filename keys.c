@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <mqueue.h>
 #include <string.h>
 #include "keys.h"
@@ -29,7 +30,7 @@ int send(int number, int key, char *value1, float value2){
   mq_receive(client_queue, &resString, sizeof(int), 0);
   mq_close(server_queue);
   mq_close(client_queue);
-  mq_unlink(“/CLIENT_ONE”);
+  mq_unlink("/CLIENT_ONE");
   
   return atoi(resString);
 }
