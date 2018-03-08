@@ -39,15 +39,15 @@ int init(){
 }
 
 int set_value(int key, char *value1, float value2){
- return send(2, key, &value1, value2); //CUIDADO CON EL FLOAT 
+ return send(2, key, value1, value2); //CUIDADO CON EL FLOAT 
 }
 
 int get_value(int key, char *value1, float *value2){
-  return send(3, key, &value1, &value2);
+  return send(3, key, value1, &value2);
 }
 
 int modify_value(int key, char *value1, float *value2){
-  return send(4, key, &value1, &value2);
+  return send(4, key, value1, &value2);
 }
 
 int delete_key(int key){
@@ -57,4 +57,3 @@ int delete_key(int key){
 int num_items(){
   return send(6, 0, "nothing", 0.0);
 }
-
