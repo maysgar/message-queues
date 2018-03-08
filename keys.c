@@ -1,31 +1,6 @@
 #include <stdio.h>
 #include "keys.h"
 
-int init(){
-  send(1, "nothing", 0.0);
-}
-
-int set_value(int key, char *value1, float value2){
- send(2, key, &value1, value2); //CUIDADO CON EL FLOAT 
-}
-
-int get_value(int key, char *value1, float *value2){
-  send(3, key, &value1, &value2);
-}
-
-int modify_value(int key, char *value1, float *value2){
-  send(4, key, &value1, &value2);
-}
-
-int delete_key(int key){
-  send(5, "nothing", 0.0);
-}
-
-int num_items(){
-  send(6, "nothing", 0.0);
-}
-
-
 
 int send(int number, int key, char *value1, float value2){
 
@@ -53,3 +28,28 @@ int send(int number, int key, char *value1, float value2){
   mq_close(client_queue);
   mq_unlink(“/CLIENT_ONE”);
 }
+
+int init(){
+  send(1, "nothing", 0.0);
+}
+
+int set_value(int key, char *value1, float value2){
+ send(2, key, &value1, value2); //CUIDADO CON EL FLOAT 
+}
+
+int get_value(int key, char *value1, float *value2){
+  send(3, key, &value1, &value2);
+}
+
+int modify_value(int key, char *value1, float *value2){
+  send(4, key, &value1, &value2);
+}
+
+int delete_key(int key){
+  send(5, "nothing", 0.0);
+}
+
+int num_items(){
+  send(6, "nothing", 0.0);
+}
+
