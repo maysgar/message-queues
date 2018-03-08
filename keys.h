@@ -7,7 +7,7 @@ struct triplet{
  float value2;
  char client_queue_name [MAXSIZE];
  int method_id; //identifier to know what method the client requests
-}
+};
 
 int init();
 
