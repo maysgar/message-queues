@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <mqueue.h>
-#include <libkeys.a>
 #include "keys.h"
 
 
@@ -14,13 +13,13 @@ int send(int number, int key, char *value1, float value2){
   
   attr.mq_maxmsg = 1;
   attr.mq_msgsize = sizeof(int);
-  client_queue = mq_open(“/CLIENT_ONE”, O_CREAT|O_RDONLY, 0700, &attr);
-  server_queue = mq_open(“/SERVER”, O_WRONLY);
+  client_queue = mq_open("/CLIENT_ONE", O_CREAT|O_RDONLY, 0700, &attr);
+  server_queue = mq_open("/SERVER", O_WRONLY);
 
   req.key = key;
   req.value1 = &value1;
   req.value2 = value2;  //OJO CUIDADO
-  strcpy(req.client_queue_name, “/CLIENT_ONE”);
+  strcpy(req.client_queue_name, "/CLIENT_ONE");
   req.method_id = number;
 
 
