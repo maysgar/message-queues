@@ -1,6 +1,6 @@
 
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <pthread.h> /* For threads */
 #include <fcntl.h> /* flags */
 #include <sys/stat.h> /* modes */
