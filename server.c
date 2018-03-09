@@ -26,7 +26,8 @@ int init(){
  }
 
  int set_value(int key, char *value1, float value2){
-     struct Node* temp = head;
+    printf("Server is executing set_value method inside\n");
+	 struct Node* temp = head;
 	 struct Node* newNode = GetNewNode(key, value1, &value2);
 	 while(temp->next != NULL){
 		 //the key already exists
@@ -118,7 +119,8 @@ void process_message(struct triplet *msg){
 			result = init(); 
 			break;  
     	case 2 :  
-			result = set_value(msg_local.key, msg_local.value1, msg_local.value2); 
+			result = set_value(msg_local.key, msg_local.value1, msg_local.value2);
+		        printf("set_value is being executed\n");	
 			break;  
     	case 3 :  
 			result = get_value(msg_local.key, msg_local.value1, &msg_local.value2);
@@ -138,7 +140,7 @@ void process_message(struct triplet *msg){
 
 	/* return result to client by sending it to queue */
 	client_queue = mq_open(msg_local.client_queue_name, O_WRONLY);
-    printf("client queue: %d\n", (int)client_queue);
+        printf("client queue: %d\n", (int)client_queue);
 	if (client_queue == -1){
 		perror("Can't open client queue");
 		mq_close(client_queue);
@@ -146,8 +148,9 @@ void process_message(struct triplet *msg){
 		return;
   	}
 	else {
+		printf("Server will now respond to the client ----->\n");
 		mq_send(client_queue, (char *) &result, sizeof(int), 0);
-		prinf("The server sends the message back to the client\n");
+		printf("The server sends the message back to the client\n");
 		//close the queue
 		mq_close(client_queue);
 		mq_unlink("/CLIENT_ONE_PLUS_3T");
@@ -188,6 +191,7 @@ int main() {
 	pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
 
 	while (1) {
+		printf("Server will now recieve client's message ---->\n");
 		mq_receive(server_queue, (char *) &msg, sizeof(struct triplet), 0);
 		printf("Server has received the request from the client\n");
 		pthread_create(&thid, &thread_attr, (void *) *process_message, &msg);

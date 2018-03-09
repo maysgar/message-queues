@@ -20,15 +20,18 @@ int send(int number, int key, char *value1, float value2){
 
   req.key = key;
   strcpy(req.value1, value1);
-  req.value2 = value2;  //OJO CUIDADO
+  req.value2 = value2;
   strcpy(req.client_queue_name, "/CLIENT_ONE_PLUS_3T");
   req.method_id = number;
 
-
+  //client sends server the message
   mq_send(server_queue, (const char *) &req, sizeof(struct triplet), 0);
-  printf("Sending SKEEEEETIT\n");
+  printf("Client sends message to the server with key: %d, value1: %s, value2: %f, method_id: %d\n", req.key, req.value1, req.value2, req.method_id);
+  //client receives server's answer
   mq_receive(client_queue, (char *) &res, sizeof(int), 0);
-  printf("Client recevies: %d\n", res); //test what client receives
+  printf("Client recevieS: %d\n", res); //test what client receives
+
+  //close both queues
   mq_close(server_queue);
   mq_unlink("/SERVER_ONE_PLUS_3T");
   mq_close(client_queue);
@@ -42,7 +45,7 @@ int init(){
 }
 
 int set_value(int key, char *value1, float value2){
- printf("key: %d , value1: %s , value2: %f\n", key, value1, value2);
+ printf("EXECUTING SET_VALUE IN KEYS.C ----> key: %d , value1: %s , value2: %f\n", key, value1, value2);
  return send(2, key, value1, value2); 
 }
 
