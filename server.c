@@ -181,7 +181,7 @@ int main() {
 
 	while (1) {
 		mq_receive(server_queue, (char *) &msg, sizeof(struct triplet), 0);
-		pthread_create(&thid, &queue_attr,(void *) *process_message, &msg);
+		pthread_create(&thid, &thread_attr, (void *) *process_message, &msg);
 
 		/* wait for thread to copy message */ //critical section
 		pthread_mutex_lock(&mutex_msg);
