@@ -26,6 +26,7 @@ int send(int number, int key, char *value1, float value2){
 
 
   mq_send(server_queue, (const char *) &req, sizeof(struct triplet), 0);
+  printf("Sending SKEEEEETIT\n");
   mq_receive(client_queue, (char *) &res, sizeof(int), 0);
   mq_close(server_queue);
   mq_unlink("/SERVER_ONE_PLUS_3T");
