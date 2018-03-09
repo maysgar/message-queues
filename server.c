@@ -64,8 +64,8 @@ int init(){
 	 while(temp->next != NULL){
 		//element found!
 		if(key == (temp->data).key){
-			(temp->data).value1 = &value1;
-			(temp->data).value2 = &value2;
+			strcpy((temp->data).value1, &value1);
+			(temp->data).value2 = value2;
 			return 0;
 		}
 		temp = temp->next;
@@ -162,6 +162,7 @@ int main() {
 	mqd_t server_queue;
 	struct triplet msg; /* message to receive */
 	struct mq_attr queue_attr; /* queue atributes */
+	pthread_t thid;
 	pthread_attr_t thread_attr; /* thread atributes */
 	queue_attr.mq_msgsize = sizeof(struct triplet);
     queue_attr.mq_maxmsg = MAX_BUFFER;
