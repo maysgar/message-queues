@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h> /* For threads */
@@ -15,65 +14,52 @@ int msg_not_copied = 1; /* TRUE = 1 */
 pthread_cond_t cond_msg;
 
 
-struct triplet init(){
-	struct triplet auxTriplet{
-		int key = 0;
- 		char value1[255] = "nothing";
- 		float value2 = 5.0;
- 		char client_queue_name [MAXSIZE] = "nothing";
- 		int method_id = -1;
-	};
-
+int init(){
 	 if(head == NULL){
-		 return auxTriplet; //error
+		 return -1;
 	 }
 	 struct Node* temp = head;
 	 while(temp->next != NULL){
 		 temp = temp->next;
 		 temp = NULL;
 	 }
-	 auxTriplet.method_id = 0; //success
-	 return auxTriplet;
+	 return 0;
  }
 
-struct triplet set_value(int key, char *value1, float value2){
+ int set_value(int key, char *value1, float value2){
      struct Node* temp = head;
 	 struct Node* newNode = GetNewNode(key, value1, &value2);
 	 while(temp->next != NULL){
 		 //the key already exists
 		 if((newNode->data).key == (temp->data).key){
-			(temp->data).method_id = -1; //return -1
-			return (temp->data);
+			 return -1;
 		 }
 		 temp = temp->next;
 		 temp->next = newNode;
 	     newNode->prev = temp;
 	 }
 	 //succesful insertion
-	 (newNode->data).method_id = 0; //return 0
-	 return (newNode->data);
+	 return 0;
  }
 
- struct triplet get_value(int key, char *value1, float *value2){
+ int get_value(int key, char *value1, float *value2){
 	struct Node* temp = head;
 	 while(temp->next != NULL){
 		//element found!
 		if(key == (temp->data).key){
 			value1 = (temp->data).value1;
 			value2 = &(temp->data).value2;
-			(temp->data).method_id = 0; //return 0 
 			printf("value1: %s\n", value1);
 			printf("value2: %f\n", *value2);
-			return (temp->data);
+			return 0;
 		}
 		temp = temp->next;
 	 }
 	 //no element with that key found
-	 (temp->data).method_id = -1; //return -1
-	 return (temp->data);
+	 return -1;
  }
 
-struct triplet modify_value(int key, char *value1, float *value2){
+ int modify_value(int key, char *value1, float *value2){
 	 struct Node* temp = head;
 	 //newNode??
 	 while(temp->next != NULL){
@@ -81,42 +67,36 @@ struct triplet modify_value(int key, char *value1, float *value2){
 		if(key == (temp->data).key){
 			strcpy((temp->data).value1, value1);
 			(temp->data).value2 = *value2;
-			(temp->data).method_id = 0; //return 0 
-			return (temp->data);
+			return 0;
 		}
 		temp = temp->next;
 	 }
 	 //no element with that key found
-	 (temp->data).method_id = -1; //return -1
-	 return (temp->data);
+	 return -1;
  }
 
-struct triplet delete_key(int key){
+ int delete_key(int key){
 	struct Node* temp = head;
 	while(temp->next != NULL){
 		//element found!
 		if(key == (temp->data).key){
-			struct triplet aux = (temp->data);
-			aux.method_id = 0; //return 0 
 			temp = NULL;
-			return aux;
+			return 0;
 		}
 		temp = temp->next;
 	 }
 	 //key does not exist
-	 (temp->data).method_id = -1; //return -1
-	 return (temp->data);
+	 return -1; 
  }
 
-struct triplet num_items(){
+ int num_items(){
 	 int items = 0;
 	 struct Node* temp = head;
 	 while(temp->next != NULL){
 		 temp = temp->next;
 		 items++;
 	 }
-	 (temp->data).method_id = items;
-	 return (temp->data);
+	 return items;
 	 //return -1 donde??
  }
 
@@ -215,4 +195,3 @@ int main() {
 	}
 
 }
-

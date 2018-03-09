@@ -10,7 +10,7 @@ int send(int number, int key, char *value1, float value2){
   mqd_t server_queue; /* server message queue */
   mqd_t client_queue; /* client message queue */
   struct triplet req;
-  strcut triplet res;
+  char *res;
   struct mq_attr attr;
   
   attr.mq_maxmsg = 1;
@@ -26,12 +26,12 @@ int send(int number, int key, char *value1, float value2){
 
 
   mq_send(server_queue, (const char *) &req, sizeof(struct triplet), 0);
-  mq_receive(client_queue, &res, sizeof(int), 0); //devolver eso para el triplet??
+  mq_receive(client_queue, res, sizeof(int), 0);
   mq_close(server_queue);
   mq_close(client_queue);
   mq_unlink("/CLIENT_ONE");
   
-  return res.method_id; //atoi?
+  return atoi(res);
 }
 
 int init(){
