@@ -21,7 +21,8 @@ pthread_cond_t cond_msg;
 		if(aux == 2){
 		mq_unlink("/SERVER_ONE_PLUS_3T");
 		}
-		return 1;
+		int i = 1
+		return i;
 	}
 
 
