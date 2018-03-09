@@ -50,6 +50,8 @@ int init(){
 		if(key == (temp->data).key){
 			value1 = (temp->data).value1;
 			value2 = &(temp->data).value2;
+			printf("value1: %s\n", value1);
+			printf("value2: %f\n", value2);
 			return 0;
 		}
 		temp = temp->next;
@@ -121,7 +123,9 @@ void process_message(struct triplet *msg){
 			result = set_value(msg_local.key, msg_local.value1, msg_local.value2); 
 			break;  
     	case 3 :  
-			result = get_value(msg_local.key, msg_local.value1, &msg_local.value2); 
+			result = get_value(msg_local.key, msg_local.value1, &msg_local.value2);
+			printf("value1: %s\n", value1);
+			printf("value2: %f\n", value2);
 			break;  
 		case 4 :
 			result = modify_value(msg_local.key, msg_local.value1, &msg_local.value2);
@@ -190,24 +194,6 @@ int main() {
 		msg_not_copied = 1;
 		pthread_mutex_unlock(&mutex_msg);
 	}
-
-  
-  /*
-  // delete the queue
-  int mq_unlink(server_queue);
-
-  //creation of threads
-  int pthread_create(pthread_t* thread, const pthread_attr_t* attr, void * (*function)(void *), void * arg);
-
-  //getting the thread id
-  pthread_t pthread_self(void);
-
-  //finalize thread execution
-  int pthread_exit(void *value);
-
-  //join thread
-  int pthread_join(pthread_ thid, void **value);
-  */
 
 }
 
