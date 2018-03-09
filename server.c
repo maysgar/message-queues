@@ -135,10 +135,6 @@ void process_message(struct triplet *msg){
 			result = num_items();
 			break;
 	}
-    
-	char *resultString;
-	sprintf(resultString, "%d", result);
-
 
 	/* return result to client by sending it to queue */
 	client_queue = mq_open(msg_local.client_queue_name, O_WRONLY);
@@ -150,7 +146,7 @@ void process_message(struct triplet *msg){
 		return -1;
   	}
 	else {
-		mq_send(client_queue, (char *) &resultString, sizeof(int), 0);
+		mq_send(client_queue, (char *) &result, sizeof(int), 0);
 		//close the queue
 		mq_close(client_queue);
 		mq_unlink("/CLIENT_ONE_PLUS_3T");
