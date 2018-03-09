@@ -11,7 +11,7 @@
 
 /* mutex and condition variables for the message copy */
 pthread_mutex_t mutex_msg;
-int msg_not_copied = TRUE; /* TRUE = 1 */
+int msg_not_copied = 1; /* TRUE = 1 */
 pthread_cond_t cond_msg;
 
 
@@ -108,7 +108,7 @@ void process_message(struct triplet *msg){
 	pthread_mutex_lock(&mutex_msg);
 	memcpy((char *) &msg_local, (char *)&msg, sizeof(struct triplet));
 	/* wake up server */
-	message_not_copied = FALSE; /* FALSE = 0 */
+	msg_not_copied = 0; /* FALSE = 0 */
 	pthread_cond_signal(&cond_msg);
 	pthread_mutex_unlock(&mutex_msg);
 
@@ -164,7 +164,7 @@ int main() {
 	struct mq_attr queue_attr; /* queue atributes */
 	pthread_attr_t thread_attr; /* thread atributes */
 	queue_attr.mq_msgsize = sizeof(struct triplet);
-    	queue_attr.mq_maxmsg = MAX_BUFFER;
+    queue_attr.mq_maxmsg = MAX_BUFFER;
 
   if((server_queue= mq_open("/SERVER", O_CREAT|O_RDONLY, 0700, &queue_attr)) == -1){
     perror("error creating the queue");
@@ -178,15 +178,15 @@ int main() {
 	/* thread atributes */
 	pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
 
-	while (TRUE) {
+	while (1) {
 		mq_receive(server_queue, &msg, sizeof(struct triplet), 0);
 		pthread_create(&thid, &queue_attr, process_message, &msg);
 
 		/* wait for thread to copy message */ //critical section
 		pthread_mutex_lock(&mutex_msg);
-		while (message_not_copied)
+		while (msg_not_copied)
 		pthread_cond_wait(&cond_msg, &mutex_msg);
-		message_not_copied = TRUE;
+		msg_not_copied = 1;
 		pthread_mutex_unlock(&mutex_msg);
 	}
 
