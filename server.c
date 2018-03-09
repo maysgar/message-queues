@@ -174,7 +174,7 @@ int main() {
 
 	pthread_mutex_init(&mutex_msg, NULL);
 	pthread_cond_init(&cond_msg, NULL);
-	pthread_attr_init(&queue_attr);
+	pthread_attr_init(&thread_attr);
 
 	/* thread atributes */
 	pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
