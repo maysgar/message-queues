@@ -157,7 +157,8 @@ void process_message(struct triplet *msg){
         printf("client queue: %d\n", (int)client_queue);
 	if (client_queue == -1){
 		perror("Can't open client queue");
-		return close_queues(client_queue, 1);
+		int a = close_queues(client_queue, 1);
+		return a;
   	}
 	else {
 		mq_send(client_queue, (char *) &resultString, sizeof(int), 0);
