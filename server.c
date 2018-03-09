@@ -48,8 +48,8 @@ int init(){
 	 while(temp->next != NULL){
 		//element found!
 		if(key == (temp->data).key){
-			&value1 = (temp->data).value1;
-			&value2 = (temp->data).value2;
+			value1 = (temp->data).value1;
+			value2 = &(temp->data).value2;
 			return 0;
 		}
 		temp = temp->next;
@@ -64,8 +64,8 @@ int init(){
 	 while(temp->next != NULL){
 		//element found!
 		if(key == (temp->data).key){
-			strcpy((temp->data).value1, &value1);
-			(temp->data).value2 = value2;
+			strcpy((temp->data).value1, value1);
+			(temp->data).value2 = *value2;
 			return 0;
 		}
 		temp = temp->next;
@@ -102,7 +102,7 @@ int init(){
 
 void process_message(struct triplet *msg){
 	struct triplet msg_local; /* local message */
-	struct mqd_t client_queue; /* client queue */
+	mqd_t client_queue; /* client queue */
 	int result;
 	/* thread copies message to local message*/
 	pthread_mutex_lock(&mutex_msg);
@@ -181,7 +181,7 @@ int main() {
 
 	while (1) {
 		mq_receive(server_queue, &msg, sizeof(struct triplet), 0);
-		pthread_create(&thid, &queue_attr, process_message, &msg);
+		pthread_create(&thid, &queue_attr,(void *) *process_message, &msg);
 
 		/* wait for thread to copy message */ //critical section
 		pthread_mutex_lock(&mutex_msg);
