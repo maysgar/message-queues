@@ -40,6 +40,7 @@ int init(){
 }
 
 int set_value(int key, char *value1, float value2){
+ printf("key: %d , value1: %s , value2: %f\n", key, value1, value2);
  return send(2, key, value1, value2); 
 }
 
