@@ -147,6 +147,7 @@ void process_message(struct triplet *msg){
   	}
 	else {
 		mq_send(client_queue, (char *) &result, sizeof(int), 0);
+		prinf("The server sends the message back to the client\n");
 		//close the queue
 		mq_close(client_queue);
 		mq_unlink("/CLIENT_ONE_PLUS_3T");
@@ -177,6 +178,7 @@ int main() {
 	return -1;
 	
   }
+  printf("............... server queue created ...................\n");
 
 	pthread_mutex_init(&mutex_msg, NULL);
 	pthread_cond_init(&cond_msg, NULL);
@@ -187,7 +189,9 @@ int main() {
 
 	while (1) {
 		mq_receive(server_queue, (char *) &msg, sizeof(struct triplet), 0);
+		printf("Server has received the request from the client\n");
 		pthread_create(&thid, &thread_attr, (void *) *process_message, &msg);
+		printf("Server creates a thread\n");
 
 		/* wait for thread to copy message */ //critical section
 		pthread_mutex_lock(&mutex_msg);
