@@ -21,7 +21,7 @@ int main(void) {
   get_value(5, "esketit", &fnumber);
 
   //Modify the associated values to the given ky by the ones specied in the method
-  printf("Look for key: '%d' and change its associated values by value1 = esketit and value2 = 5.0\n");
+  printf("Look for key: 5 and change its associated values by value1 = esketit and value2 = 5.0\n");
   modify_value(5, "esketit", &fnumber);
 
   //Delete the elements with the given key

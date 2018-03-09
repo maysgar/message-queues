@@ -11,20 +11,20 @@
 
 /* mutex and condition variables for the message copy */
 pthread_mutex_t mutex_msg;
-int msg_not_copied = TRUE; /* TRUE = 1 */
+int msg_not_copied = 1; /* TRUE = 1 */
 pthread_cond_t cond_msg;
 
 int main() {
 
-	/Driver code to test the implementation/
+	/*Driver code to test the implementation*/
 	head = NULL; // empty list. set head as NULL.
 
-  //creation of the queue
+    //creation of the queue
 	mqd_t server_queue;
 	struct triplet msg; /* message to receive */
 	struct mq_attr queue_attr; /* queue atributes */
 	pthread_attr_t thread_attr; /* thread atributes */
-	queue_attr.mq_msgsize = sizeof(struct triplet));
+	queue_attr.mq_msgsize = sizeof(struct triplet);
     queue_attr.mq_maxmsg = MAX_BUFFER;
 
   if(server_queue= mq_open("/SERVER", O_CREAT|O_RDONLY, 0700, &queue_attr)) == -1){

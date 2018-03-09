@@ -23,8 +23,8 @@ struct Node* GetNewNode(int key, char *value1, float *value2){
 }
 
 //Inserts a Node at head of doubly linked list
-void InsertAtHead(int x) {
-	struct Node* newNode = GetNewNode(x);
+void InsertAtHead(int key, char *value1, float *value2) {
+	struct Node* newNode = GetNewNode(int key, char *value1, float *value2);
 	if(head == NULL) {
 		head = newNode;
 		return;
@@ -35,9 +35,9 @@ void InsertAtHead(int x) {
 }
 
 //Inserts a Node at tail of Doubly linked list
-void InsertAtTail(int x) {
+void InsertAtTail(int key, char *value1, float *value2) {
 	struct Node* temp = head;
-	struct Node* newNode = GetNewNode(x);
+	struct Node* newNode = GetNewNode(int key, char *value1, float *value2);
 	if(head == NULL) {
 		head = newNode;
 		return;
@@ -52,7 +52,7 @@ void Print() {
 	struct Node* temp = head;
 	printf("Forward: ");
 	while(temp != NULL) {
-		printf("%d ",temp->data);
+		printf("%d ",(temp->data)->key);
 		temp = temp->next;
 	}
 	printf("\n");
@@ -69,7 +69,7 @@ void ReversePrint() {
 	// Traversing backward using prev pointer
 	printf("Reverse: ");
 	while(temp != NULL) {
-		printf("%d ",temp->data);
+		printf("%d ",(temp->data)->key));
 		temp = temp->prev;
 	}
 	printf("\n");
