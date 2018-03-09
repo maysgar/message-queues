@@ -15,7 +15,7 @@ pthread_cond_t cond_msg;
 
 int init(){
 	 if(head == NULL){
-		 return -1;
+		 return 0;
 	 }
 	 struct Node* temp = head;
 	 while(temp->next != NULL){
@@ -106,7 +106,7 @@ void process_message(struct triplet *msg){
 	int result;
 	/* thread copies message to local message*/
 	pthread_mutex_lock(&mutex_msg);
-	memcpy((char *) &msg_local, (char *)&msg, sizeof(struct triplet));
+	memcpy((char *) &msg_local, (char *)msg, sizeof(struct triplet));
 	/* wake up server */
 	msg_not_copied = 0; /* FALSE = 0 */
 	pthread_cond_signal(&cond_msg);
@@ -143,7 +143,7 @@ void process_message(struct triplet *msg){
 		perror("Can't open client queue");
 		mq_close(client_queue);
 		mq_unlink("/CLIENT_ONE_PLUS_3T");
-		return -1;
+		return;
   	}
 	else {
 		mq_send(client_queue, (char *) &result, sizeof(int), 0);
