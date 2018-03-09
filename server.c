@@ -124,8 +124,8 @@ void process_message(struct triplet *msg){
 			break;  
     	case 3 :  
 			result = get_value(msg_local.key, msg_local.value1, &msg_local.value2);
-			printf("value1: %s\n", value1);
-			printf("value2: %f\n", value2);
+			printf("value1: %s\n", msg_local.value1);
+			printf("value2: %f\n", msg_local.value2);
 			break;  
 		case 4 :
 			result = modify_value(msg_local.key, msg_local.value1, &msg_local.value2);
