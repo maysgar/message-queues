@@ -14,9 +14,9 @@ struct Node* head; // global variable - pointer to head node.
 //Creates a new Node and returns pointer to it.
 struct Node* GetNewNode(int key, char *value1, float *value2){
 	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-	(newNode->data)->key = key;
-	(newNode->data)->value1 = &value1;
-	(newNode->data)->value2 = &value2;
+	(newNode->data).key = key;
+	(newNode->data).value1 = &value1;
+	(newNode->data).value2 = &value2;
 	newNode->prev = NULL;
 	newNode->next = NULL;
 	return newNode;
@@ -52,7 +52,7 @@ void Print() {
 	struct Node* temp = head;
 	printf("Forward: ");
 	while(temp != NULL) {
-		printf("%d ",(temp->data)->key);
+		printf("%d ",(temp->data).key);
 		temp = temp->next;
 	}
 	printf("\n");
@@ -69,7 +69,7 @@ void ReversePrint() {
 	// Traversing backward using prev pointer
 	printf("Reverse: ");
 	while(temp != NULL) {
-		printf("%d ",(temp->data)->key));
+		printf("%d ",(temp->data).key));
 		temp = temp->prev;
 	}
 	printf("\n");
