@@ -51,7 +51,7 @@ int init(){
 			value1 = (temp->data).value1;
 			value2 = &(temp->data).value2;
 			printf("value1: %s\n", value1);
-			printf("value2: %f\n", value2);
+			printf("value2: %f\n", *value2);
 			return 0;
 		}
 		temp = temp->next;
