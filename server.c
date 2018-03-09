@@ -152,7 +152,7 @@ void process_message(struct mensaje *msg){
 	struct Node* temp = head;
 	 while(temp->next != NULL){
 		//element found!
-		if(key == temp->key){
+		if(key == (temp->data).key){
 			&value1 = (temp->data).value1;
 			&value2 = (temp->data).value2;
 			return 0;
