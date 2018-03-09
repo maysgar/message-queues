@@ -180,7 +180,7 @@ int main() {
 	pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
 
 	while (1) {
-		mq_receive(server_queue, &msg, sizeof(struct triplet), 0);
+		mq_receive(server_queue, (char *) &msg, sizeof(struct triplet), 0);
 		pthread_create(&thid, &queue_attr,(void *) *process_message, &msg);
 
 		/* wait for thread to copy message */ //critical section
