@@ -15,8 +15,8 @@ struct Node* head; // global variable - pointer to head node.
 struct Node* GetNewNode(int key, char *value1, float *value2){
 	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
 	(newNode->data).key = key;
-	(newNode->data).value1 = &value1;
-	(newNode->data).value2 = &value2;
+	strcpy((newNode->data).value1, value1);
+	(newNode->data).value2 = *value2;
 	newNode->prev = NULL;
 	newNode->next = NULL;
 	return newNode;
@@ -24,7 +24,7 @@ struct Node* GetNewNode(int key, char *value1, float *value2){
 
 //Inserts a Node at head of doubly linked list
 void InsertAtHead(int key, char *value1, float *value2) {
-	struct Node* newNode = GetNewNode(int key, char *value1, float *value2);
+	struct Node* newNode = GetNewNode(key, value1, value2);
 	if(head == NULL) {
 		head = newNode;
 		return;
@@ -37,7 +37,7 @@ void InsertAtHead(int key, char *value1, float *value2) {
 //Inserts a Node at tail of Doubly linked list
 void InsertAtTail(int key, char *value1, float *value2) {
 	struct Node* temp = head;
-	struct Node* newNode = GetNewNode(int key, char *value1, float *value2);
+	struct Node* newNode = GetNewNode(key, value1, value2);
 	if(head == NULL) {
 		head = newNode;
 		return;
@@ -69,7 +69,7 @@ void ReversePrint() {
 	// Traversing backward using prev pointer
 	printf("Reverse: ");
 	while(temp != NULL) {
-		printf("%d ",(temp->data).key));
+		printf("%d ",(temp->data).key);
 		temp = temp->prev;
 	}
 	printf("\n");
@@ -86,5 +86,5 @@ void ReversePrint() {
 	InsertAtTail(4); Print(); ReversePrint();
 	InsertAtHead(6); Print(); ReversePrint();
 	InsertAtTail(8); Print(); ReversePrint();
-*/
 }
+*/
