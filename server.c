@@ -13,6 +13,17 @@ pthread_mutex_t mutex_msg;
 int msg_not_copied = 1; /* TRUE = 1 */
 pthread_cond_t cond_msg;
 
+	int close_queues(mqd_t queue, int aux){
+		mq_close(queue);
+		if(aux == 1){
+		mq_unlink("/CLIENT_ONE_PLUS_3T");
+		}
+		if(aux == 2){
+		mq_unlink("/SERVER_ONE_PLUS_3T");
+		}
+		return 1;
+	}
+
 
 int init(){
 	 if(head == NULL){
@@ -143,8 +154,10 @@ void process_message(struct triplet *msg){
 
 	/* return result to client by sending it to queue */
 	client_queue = mq_open(msg_local.client_queue_name, O_WRONLY);
+        printf("client queue: %d\n", (int)client_queue);
 	if (client_queue == -1){
 		perror("Can't open client queue");
+		return close_queues(client_queue, 1);
   	}
 	else {
 		mq_send(client_queue, (char *) &resultString, sizeof(int), 0);
@@ -168,11 +181,11 @@ int main() {
 	pthread_t thid;
 	pthread_attr_t thread_attr; /* thread atributes */
 	queue_attr.mq_msgsize = sizeof(struct triplet);
-    queue_attr.mq_maxmsg = MAX_BUFFER;
+    	queue_attr.mq_maxmsg = 10; //mq_maxmsg
 
-  if((server_queue= mq_open("/SERVER", O_CREAT|O_RDONLY, 0700, &queue_attr)) == -1){
-    perror("error creating the queue");
-    return -1;
+  if((server_queue= mq_open("/SERVER_ONE_PLUS_3T", O_CREAT|O_RDONLY, 0700, &queue_attr)) == -1){
+    perror("error creating the server queue");
+    return close_queues(server_queue, 2);
   }
 
 	pthread_mutex_init(&mutex_msg, NULL);

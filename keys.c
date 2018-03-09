@@ -15,21 +15,21 @@ int send(int number, int key, char *value1, float value2){
   
   attr.mq_maxmsg = 1;
   attr.mq_msgsize = sizeof(int);
-  client_queue = mq_open("/CLIENT_ONE", O_CREAT|O_RDONLY, 0700, &attr);
-  server_queue = mq_open("/SERVER", O_WRONLY);
+  client_queue = mq_open("/CLIENT_ONE_PLUS_3T", O_CREAT|O_RDONLY, 0700, &attr);
+  server_queue = mq_open("/SERVER_ONE_PLUS_3T", O_WRONLY);
 
   req.key = key;
   strcpy(req.value1, value1);
   req.value2 = value2;  //OJO CUIDADO
-  strcpy(req.client_queue_name, "/CLIENT_ONE");
+  strcpy(req.client_queue_name, "/CLIENT_ONE_PLUS_3T");
   req.method_id = number;
 
 
   mq_send(server_queue, (const char *) &req, sizeof(struct triplet), 0);
-  mq_receive(client_queue, res, sizeof(int), 0);
+  mq_receive(client_queue, (char *) &res, sizeof(struct triplet), 0);
   mq_close(server_queue);
   mq_close(client_queue);
-  mq_unlink("/CLIENT_ONE");
+  mq_unlink("/CLIENT_ONE_PLUS_3T");
   
   return atoi(res);
 }
@@ -39,7 +39,7 @@ int init(){
 }
 
 int set_value(int key, char *value1, float value2){
- return send(2, key, value1, value2); //CUIDADO CON EL FLOAT 
+ return send(2, key, value1, value2); 
 }
 
 int get_value(int key, char *value1, float *value2){

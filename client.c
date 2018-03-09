@@ -6,9 +6,10 @@
 
 int main(void) {
 
+  float fnumber = 5.0;
+
   //Initialization of the system
   printf("Initializing  the system\n");
-  float fnumber = 5.0;
   init();
   
   //Insertion of an element
