@@ -10,7 +10,8 @@ int main(void) {
 
   //Initialization of the system
   printf("Initializing  the system\n");
-  init();
+  int in = init();
+  printf("Result of the init method: %d\n", );
   
   //Insertion of an element
   printf("Inserting the triplet [5, esketit, 5.0]\n");
