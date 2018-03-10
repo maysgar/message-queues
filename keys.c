@@ -15,8 +15,13 @@ int send(int number, int key, char *value1, float value2){
   
   attr.mq_maxmsg = 1;
   attr.mq_msgsize = sizeof(int);
+  /* open client queue */
   client_queue = mq_open("/CLIENT_ONE_PLUS_3T", O_CREAT|O_RDONLY, 0700, &attr);
-  server_queue = mq_open("/SERVER_ONE_PLUS_3T", O_WRONLY);
+
+  /* open server queue if it is not opened */
+  if(number == 1){ /* server_queue == -1 */
+    server_queue = mq_open("/SERVER_ONE_PLUS_3T", O_WRONLY); 
+  }
 
   req.key = key;
   strcpy(req.value1, value1);
@@ -29,11 +34,11 @@ int send(int number, int key, char *value1, float value2){
   printf("Client sends message to the server with key: %d, value1: %s, value2: %f, method_id: %d\n", req.key, req.value1, req.value2, req.method_id);
   //client receives server's answer
   mq_receive(client_queue, (char *) &res, sizeof(int), 0);
-  printf("Client recevieS: %d\n", res); //test what client receives
+  printf("Client receives: %d\n", res); //test what client receives
 
   //close both queues
-  mq_close(server_queue);
-  mq_unlink("/SERVER_ONE_PLUS_3T");
+  /*mq_close(server_queue);
+  mq_unlink("/SERVER_ONE_PLUS_3T");*/
   mq_close(client_queue);
   mq_unlink("/CLIENT_ONE_PLUS_3T");
   

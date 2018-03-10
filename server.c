@@ -138,15 +138,17 @@ void process_message(struct triplet *msg){
 			break;
 	}
 
-	/* return result to client by sending it to queue */
+	/* open client queue */
 	client_queue = mq_open(msg_local.client_queue_name, O_WRONLY);
         printf("client queue: %d\n", (int)client_queue);
+	/* if there is any error when opening the client queue*/
 	if (client_queue == -1){
 		perror("Can't open client queue");
 		mq_close(client_queue);
 		mq_unlink("/CLIENT_ONE_PLUS_3T");
 		return;
   	}
+	/* if everything goes well, return result to the client */
 	else {
 		printf("Server will now respond to the client ----->\n");
 		mq_send(client_queue, (char *) &result, sizeof(int), 0);
@@ -165,16 +167,19 @@ int main() {
 	/*Driver code to test the implementation*/
 	head = NULL; // empty list. set head as NULL.
 
-    //creation of the queue
+    //creation of the server queue
 	mqd_t server_queue;
 	struct triplet msg; /* message to receive */
 	struct mq_attr queue_attr; /* queue atributes */
 	pthread_t thid;
 	pthread_attr_t thread_attr; /* thread atributes */
 	queue_attr.mq_msgsize = sizeof(struct triplet);
-    	queue_attr.mq_maxmsg = 10; //mq_maxmsg
 
+    queue_attr.mq_maxmsg = 10; //We set the maximum number of client requests to 10
+
+  //Open server queue when initiating the system
   if((server_queue= mq_open("/SERVER_ONE_PLUS_3T", O_CREAT|O_RDONLY, 0700, &queue_attr)) == -1){
+	//if there is an error opening the queue, we end the system by closing and unlinking the queue
     perror("error creating the server queue");
 	mq_close(server_queue);
 	mq_unlink("/SERVER_ONE_PLUS_3T");
@@ -190,10 +195,13 @@ int main() {
 	/* thread atributes */
 	pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
 
+	// While the system is working, the server will always be awaiting for client requests
 	while (1) {
 		printf("Server will now recieve client's message ---->\n");
-		mq_receive(server_queue, (char *) &msg, sizeof(struct triplet), 0);
+		/* receiving client's request message */
+		mq_receive(server_queue, (char *) &msg, sizeof(struct triplet), 0); 
 		printf("Server has received the request from the client\n");
+		/* creating thread for the request and call process_message method to satisfy the request and answer back*/
 		pthread_create(&thid, &thread_attr, (void *) *process_message, &msg);
 		printf("Server creates a thread\n");
 
