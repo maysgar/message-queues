@@ -2,6 +2,7 @@
 #include <mqueue.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "keys.h"
 
 int main(void) {
@@ -14,9 +15,10 @@ int main(void) {
   int in = init();
   printf("Result of the init method: %d\n", in);
   
+  sleep(1);
   //Insertion of an element
   printf("Inserting the triplet [5, &value1, 5.0]\n");
-  set_value(5, (char *) "esketit", fnumber);
+  set_value(5, (char *) &value1, fnumber);
 
   //Obtain the value associated to a key
   printf("Obtain the value associated to key -> 5\n");
