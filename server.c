@@ -207,7 +207,7 @@ int main() {
 
 		/* wait for thread to copy message */ //critical section
 		pthread_mutex_lock(&mutex_msg);
-		while (msg_not_copied)
+		/* while (msg_not_copied) */
 		pthread_cond_wait(&cond_msg, &mutex_msg);
 		msg_not_copied = 1;
 		pthread_mutex_unlock(&mutex_msg);
