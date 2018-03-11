@@ -16,11 +16,11 @@ int main(void) {
   
   //Insertion of an element
   printf("Inserting the triplet [5, &value1, 5.0]\n");
-  set_value(5, (char *) &value1, fnumber);
+  get_value(5, (char *) &value1, &fnumber);
 
   //Obtain the value associated to a key
   printf("Obtain the value associated to key -> 5\n");
-  get_value(5, (char *) &value1, &fnumber);
+  set_value(5, (char *) &value1, fnumber);
 
   //Modify the associated values to the given ky by the ones specied in the method
   printf("Look for key: 5 and change its associated values by value1 and value2 = 5.0\n");
