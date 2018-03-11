@@ -16,18 +16,7 @@ int send(int number, int key, char *value1, float value2){
   attr.mq_maxmsg = 1;
   attr.mq_msgsize = sizeof(int);
   /* open client queue */
-  char *queue_name;
-  int queue_number;
-  if(number == 1){
-    queue_number = 0;
-  }
-  else{
-    queue_number++;
-  }
-  
-  strcpy(queue_name, "CLIENT_QUEUE_ISMA_");
-  strcat(queue_name, queue_number);
-  client_queue = mq_open(queue_name, O_CREAT|O_RDONLY, 0700, &attr);
+  client_queue = mq_open("/CLIENT_ONE_PLUS_3T", O_CREAT|O_RDONLY, 0700, &attr);
 
   /* open server queue if it is not opened */
   if(number == 1){ /* server_queue == -1 */
@@ -37,7 +26,7 @@ int send(int number, int key, char *value1, float value2){
   req.key = key;
   strcpy(req.value1, value1);
   req.value2 = value2;
-  strcpy(req.client_queue_name,(queue_name);
+  strcpy(req.client_queue_name, "/CLIENT_ONE_PLUS_3T");
   req.method_id = number;
 
   //client sends server the message
@@ -51,7 +40,7 @@ int send(int number, int key, char *value1, float value2){
   /*mq_close(server_queue);
   mq_unlink("/SERVER_ONE_PLUS_3T");*/
   mq_close(client_queue);
-  mq_unlink(queue_name);
+  mq_unlink("/CLIENT_ONE_PLUS_3T");
   
   return res;
 }
