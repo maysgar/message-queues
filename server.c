@@ -139,7 +139,7 @@ void process_message(struct triplet *msg){
 	}
 
 	/* open client queue */
-	client_queue = mq_open("CLIENT_ONE_PLUS_3T", O_WRONLY);
+	client_queue = mq_open(msg_local.client_queue_name, O_WRONLY);
         printf("client queue: %d\n", (int)client_queue);
 	/* if there is any error when opening the client queue*/
 	if (client_queue == -1){
@@ -155,7 +155,7 @@ void process_message(struct triplet *msg){
 		printf("The server sends the message back to the client\n");
 		//close the queue
 		mq_close(client_queue);
-		mq_unlink("/CLIENT_ONE_PLUS_3T");
+		mq_unlink(msg_local.client_queue_name);
 	}
 	pthread_exit(0);
 }
