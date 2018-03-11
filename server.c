@@ -139,7 +139,7 @@ void process_message(struct triplet *msg){
 	}
 
 	/* open client queue */
-	client_queue = mq_open("CLIENT_ONE_PLUS_3T", O_WRONLY);
+	client_queue = mq_open("/CLIENT_ONE_PLUS_3T", O_WRONLY);
         printf("client queue: %d\n", (int)client_queue);
 	/* if there is any error when opening the client queue*/
 	if (client_queue == -1){
