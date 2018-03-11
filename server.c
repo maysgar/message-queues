@@ -26,7 +26,6 @@ int init(){
  }
 
  int set_value(int key, char *value1, float value2){
-    printf("Server is executing set_value method inside\n");
 	 struct Node* temp = head;
 	 struct Node* newNode = GetNewNode(key, value1, &value2);
 	 while(temp->next != NULL){
@@ -120,7 +119,6 @@ void process_message(struct triplet *msg){
 			break;  
     	case 2 :  
 			result = set_value(msg_local.key, msg_local.value1, msg_local.value2);
-		        printf("set_value is being executed\n");	
 			break;  
     	case 3 :  
 			result = get_value(msg_local.key, msg_local.value1, &msg_local.value2);
@@ -140,7 +138,7 @@ void process_message(struct triplet *msg){
 
 	/* open client queue */
 	client_queue = mq_open("/CLIENT_ONE_PLUS_3T", O_WRONLY);
-        printf("client queue: %d\n", (int)client_queue);
+
 	/* if there is any error when opening the client queue*/
 	if (client_queue == -1){
 		perror("Can't open client queue");
@@ -150,9 +148,7 @@ void process_message(struct triplet *msg){
   	}
 	/* if everything goes well, return result to the client */
 	else {
-		printf("Server will now respond to the client ----->\n");
 		mq_send(client_queue, (char *) &result, sizeof(int), 0);
-		printf("The server sends the message back to the client\n");
 		//close the queue
 		mq_close(client_queue);
 		mq_unlink("/CLIENT_ONE_PLUS_3T");
@@ -186,7 +182,6 @@ int main() {
 	return -1;
 	
   }
-  printf("............... server queue created ...................\n");
 
 	pthread_mutex_init(&mutex_msg, NULL);
 	pthread_cond_init(&cond_msg, NULL);
@@ -197,17 +192,17 @@ int main() {
 
 	// While the system is working, the server will always be awaiting for client requests
 	while (1) {
-		printf("Server will now recieve client's message ---->\n");
+		/* printf("Server will now recieve client's message ---->\n"); */
 		/* receiving client's request message */
 		mq_receive(server_queue, (char *) &msg, sizeof(struct triplet), 0); 
-		printf("Server has received the request from the client\n");
-		/* creating thread for the request and call process_message method to satisfy the request and answer back*/
+		/*  printf("Server has received the request from the client\n"); */
+		/* creating thread for the request and call process_message method to satisfy the request and answer back */
 		pthread_create(&thid, &thread_attr, (void *) *process_message, &msg);
-		printf("Server creates a thread\n");
+		/*  printf("Server creates a thread\n"); */
 
 		/* wait for thread to copy message */ //critical section
 		pthread_mutex_lock(&mutex_msg);
-		/* while (msg_not_copied) */
+		while (msg_not_copied)
 		pthread_cond_wait(&cond_msg, &mutex_msg);
 		msg_not_copied = 1;
 		pthread_mutex_unlock(&mutex_msg);
